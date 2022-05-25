@@ -1,23 +1,13 @@
-package com.project.data.repository
+package com.project.data.datasource
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.project.data.database.TodoDatabase
 import com.project.data.model.TodoResponse
-import com.project.domain.model.Todo
-import com.project.domain.repository.TodoRepository
 import java.lang.IllegalStateException
 
-interface TodoDataSource {
-    fun insert(todoResponse: TodoResponse)
-    fun getTodo(id: Long): TodoResponse
-    fun list(): LiveData<MutableList<TodoResponse>>
-    suspend fun update(todoResponse: TodoResponse)
-    fun delete(todoResponse: TodoResponse)
-}
-
-class TodoRepositoryImpl(context: Context) : TodoDataSource {
+class TodoDataSourceImpl(context: Context) : TodoDataSource {
 
     private val database: TodoDatabase = Room.databaseBuilder(
         context.applicationContext,
@@ -37,15 +27,15 @@ class TodoRepositoryImpl(context: Context) : TodoDataSource {
     override fun delete(todoResponse: TodoResponse) = todoDao.delete(todoResponse)
 
     companion object {
-        private var INSTANCE: TodoRepositoryImpl? = null
+        private var INSTANCE: TodoDataSourceImpl? = null
 
         fun initialize(context: Context) {
             if (INSTANCE == null)
-                INSTANCE = TodoRepositoryImpl(context)
+                INSTANCE = TodoDataSourceImpl(context)
         }
 
-        fun get(): TodoRepositoryImpl {
-            return INSTANCE ?: throw IllegalStateException("TodoRepository muse be initialized")
+        fun get(): TodoDataSourceImpl {
+            return INSTANCE ?: throw IllegalStateException("TodoDataSourceImpl muse be initialized")
         }
     }
 }
