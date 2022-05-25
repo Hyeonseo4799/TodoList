@@ -7,6 +7,6 @@ interface TodoRepository {
     fun list(): LiveData<MutableList<Todo>>
     fun getTodo(id: Long): Todo
     fun insert(todo: Todo)
-    fun update(todo: Todo)
+    suspend fun update(todo: Todo)
     fun delete(todo: Todo)
 }
