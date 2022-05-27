@@ -8,4 +8,4 @@ data class Todo(
     val content: String,
     val timestamp: String,
     var isChecked: Boolean
-): Serializable
+) : Serializable
