@@ -24,10 +24,8 @@ class MainActivity : AppCompatActivity() {
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
             val todo = it.data?.getSerializableExtra("todo") as Todo
-            Log.d("todo", todo.toString())
             when (it.data?.getIntExtra("flag", -1)) {
                 0 -> {
-                    Log.d("todo", it.data?.getIntExtra("flag", -1).toString())
                     CoroutineScope(Dispatchers.IO).launch { todoViewModel.insert(todo) }
                     Toast.makeText(this, "추가되었습니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -66,9 +64,7 @@ class MainActivity : AppCompatActivity() {
     private fun onClick(itemId: Long) {
         CoroutineScope(Dispatchers.IO).launch {
             val todo = todoViewModel.getTodo(itemId)
-            Log.d("todo", todo.toString())
             todo.isChecked = !todo.isChecked
-            Log.d("todo", todo.toString())
             todoViewModel.update(todo)
         }
     }
