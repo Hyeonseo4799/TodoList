@@ -8,8 +8,12 @@
             type="com.project.domain.model.Todo" />
 
         <variable
-            name="clickListener"
-            type="com.project.todolist.view.TodoClickListener" />
+            name="cbClickListener"
+            type="com.project.todolist.view.CheckBoxClickListener" />
+
+        <variable
+            name="itemClickListner"
+            type="com.project.todolist.view.ItemClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,6 +21,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{() -> itemClickListner.itemClick(item)}"
         android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:paddingEnd="10dp"
@@ -50,7 +55,7 @@
             android:checked="@{item.isChecked}"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:onClick="@{() -> clickListener.onClick(item)}"
+            android:onClick="@{() -> cbClickListener.cbClick(item)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

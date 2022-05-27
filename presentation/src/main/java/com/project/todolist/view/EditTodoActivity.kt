@@ -15,24 +15,35 @@ class EditTodoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTodoBinding
     lateinit var type: String
     lateinit var btnText: String
+    var title = ""
+    var content = ""
+    private var todo: Todo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@EditTodoActivity, R.layout.activity_edit_todo)
         binding.activity = this@EditTodoActivity
         type = intent.getStringExtra("type")!!
-        btnText = if (type == "ADD") "추가하기" else "수정하기"
+        when (type) {
+            "ADD" -> btnText = "추가하기"
+            "EDIT" -> {
+                todo = intent.getSerializableExtra("item") as Todo?
+                title = todo!!.title
+                content = todo!!.content
+                btnText = "수정하기"
+            }
+        }
+
     }
 
     @SuppressLint("SimpleDateFormat")
     fun save() {
+        val currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
         val title = binding.todoTitle.text.toString()
         val content = binding.todoContent.text.toString()
-        val currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
-
         when (type) {
             "ADD" -> {
-                if (title.isNotEmpty() && content.isNotEmpty()) {
+                if (emptyCheck(title, content)) {
                     val todo = Todo(0, title, content, currentDate, false)
                     val intent = Intent().apply {
                         putExtra("todo", todo)
@@ -40,10 +51,21 @@ class EditTodoActivity : AppCompatActivity() {
                     }
                     setResult(RESULT_OK, intent)
                     finish()
-                } else {
-                    // 수정
+                }
+            }
+            "EDIT" -> {
+                if (emptyCheck(title, content)) {
+                    val todo = Todo(todo!!.id, title, content, currentDate, todo!!.isChecked)
+                    val intent = Intent().apply {
+                        putExtra("todo", todo)
+                        putExtra("flag", 1)
+                    }
+                    setResult(RESULT_OK, intent)
+                    finish()
                 }
             }
         }
     }
 }
+
+private fun emptyCheck(title: String, content: String): Boolean = title.isNotEmpty() && content.isNotEmpty()

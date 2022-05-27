@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.domain.model.Todo
 import com.project.todolist.databinding.ItemTodoBinding
 
-class TodoAdapter(private val context: Context, private val clickListener: TodoClickListener) : RecyclerView.Adapter<TodoAdapter.TodoVH>() {
+class TodoAdapter(
+    private val context: Context, private val clickListener: CheckBoxClickListener, private val itemClickListener: ItemClickListener
+) : RecyclerView.Adapter<TodoAdapter.TodoVH>() {
     private var list = mutableListOf<Todo>()
 
     inner class TodoVH(private val binding: ItemTodoBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -20,8 +22,10 @@ class TodoAdapter(private val context: Context, private val clickListener: TodoC
                 else todoTitle.paintFlags = todoTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
         }
+
         init {
-            binding.clickListener = clickListener
+            binding.cbClickListener = clickListener
+            binding.itemClickListner = itemClickListener
         }
     }
 
@@ -48,6 +52,10 @@ class TodoAdapter(private val context: Context, private val clickListener: TodoC
 
 }
 
-class TodoClickListener(val clickListener: (itemId: Long) -> Unit) {
-    fun onClick(todo: Todo) = clickListener(todo.id)
+class CheckBoxClickListener(val clickListener: (itemId: Long) -> Unit) {
+    fun cbClick(todo: Todo) = clickListener(todo.id)
+}
+
+class ItemClickListener(val itemClickListener: (itemid: Long) -> Unit) {
+    fun itemClick(todo: Todo) = itemClickListener(todo.id)
 }

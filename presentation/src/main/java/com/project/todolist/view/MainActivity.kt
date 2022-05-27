@@ -15,6 +15,7 @@ import com.project.todolist.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,11 @@ class MainActivity : AppCompatActivity() {
             when (it.data?.getIntExtra("flag", -1)) {
                 0 -> {
                     CoroutineScope(Dispatchers.IO).launch { todoViewModel.insert(todo) }
-                    Toast.makeText(this, "추가되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "추가되었습니다.", Toast.LENGTH_SHORT).show()
+                }
+                1 -> {
+                    CoroutineScope(Dispatchers.IO).launch { todoViewModel.update(todo) }
+                    Toast.makeText(this@MainActivity, "수정되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -51,7 +56,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRec() {
-        todoAdapter = TodoAdapter(this@MainActivity, TodoClickListener { id -> onClick(id) })
+        todoAdapter = TodoAdapter(this@MainActivity,
+            CheckBoxClickListener { id -> cbClick(id) },
+            ItemClickListener { id -> itemClick(id) })
+
         todoAdapter.setHasStableIds(true)
         binding.apply {
             rvTodoList.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -61,11 +69,22 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun onClick(itemId: Long) {
+    private fun cbClick(itemId: Long) {
         CoroutineScope(Dispatchers.IO).launch {
             val todo = todoViewModel.getTodo(itemId)
             todo.isChecked = !todo.isChecked
             todoViewModel.update(todo)
+        }
+    }
+
+    private fun itemClick(itemId: Long) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val todo = todoViewModel.getTodo(itemId)
+            val intent = Intent(this@MainActivity, EditTodoActivity::class.java).apply {
+                putExtra("type", "EDIT")
+                putExtra("item", todo)
+            }
+            requestActivity.launch(intent)
         }
     }
 }
