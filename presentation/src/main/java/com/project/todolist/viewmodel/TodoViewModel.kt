@@ -4,31 +4,33 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.Todo
-import com.project.domain.usecase.DeleteUseCase
-import com.project.domain.usecase.ListUseCase
-import com.project.domain.usecase.UpdateUseCase
+import com.project.domain.usecase.*
 import kotlinx.coroutines.launch
 
 class TodoViewModel(
     private val deleteUseCase: DeleteUseCase,
-    private val getTodoUseCase: DeleteUseCase,
-    private val insertUseCase: DeleteUseCase,
+    private val getTodoUseCase: GetTodoUseCase,
+    private val insertUseCase: InsertUseCase,
     private val listUseCase: ListUseCase,
     private val updateUseCase: UpdateUseCase
 ) : ViewModel() {
+    val todoList : LiveData<MutableList<Todo>>
+
+    init {
+        todoList = list()
+    }
+
     fun delete(todo: Todo) {
         deleteUseCase.invoke(todo)
     }
 
-    fun getTodo(todo: Todo) {
-        getTodoUseCase.invoke(todo)
-    }
+    fun getTodo(id: Long): Todo = getTodoUseCase.invoke(id)
 
     fun insert(todo: Todo) {
         insertUseCase.invoke(todo)
     }
 
-    fun list(): LiveData<MutableList<Todo>> = listUseCase.invoke()
+    private fun list(): LiveData<MutableList<Todo>> = listUseCase.invoke()
 
     fun update(todo: Todo) {
         viewModelScope.launch {
