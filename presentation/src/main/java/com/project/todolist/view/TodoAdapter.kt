@@ -36,11 +36,16 @@ class TodoAdapter(private val context: Context, private val clickListener: TodoC
 
     override fun getItemCount(): Int = list.size
 
+    override fun getItemId(position: Int): Long {
+        return list[position].id
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun update(newList: MutableList<Todo>) {
         this.list = newList
         notifyDataSetChanged()
     }
+
 }
 
 class TodoClickListener(val clickListener: (itemId: Long) -> Unit) {

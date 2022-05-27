@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this@MainActivity
 
         setRec()
+
         todoViewModel.todoList.observe(this@MainActivity) { todoAdapter.update(it) }
     }
 
@@ -53,10 +54,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setRec() {
         todoAdapter = TodoAdapter(this@MainActivity, TodoClickListener { id -> onClick(id) })
+        todoAdapter.setHasStableIds(true)
         binding.apply {
             rvTodoList.layoutManager = LinearLayoutManager(this@MainActivity)
             rvTodoList.adapter = todoAdapter
+            rvTodoList.itemAnimator = null
         }
+
     }
 
     private fun onClick(itemId: Long) {
