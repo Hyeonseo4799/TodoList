@@ -14,7 +14,7 @@ class TodoViewModel(
     private val listUseCase: ListUseCase,
     private val updateUseCase: UpdateUseCase
 ) : ViewModel() {
-    val todoList : LiveData<MutableList<Todo>>
+    val todoList: LiveData<MutableList<Todo>>
 
     init {
         todoList = list()
