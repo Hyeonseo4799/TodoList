@@ -36,7 +36,7 @@
             android:background="@null"
             android:gravity="start|top"
             android:hint="@string/enter_todo_content"
-            android:inputType="textLongMessage"
+            android:inputType="textMultiLine"
             android:paddingStart="3dp"
             android:paddingEnd="0dp"
             android:text="@{activity.content}"
