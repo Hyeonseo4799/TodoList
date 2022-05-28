@@ -52,7 +52,7 @@
             android:id="@+id/cbCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="@{item.isChecked}"
+            android:checked="@{item.checked}"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:onClick="@{() -> cbClickListener.cbClick(item)}"
