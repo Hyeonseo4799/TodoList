@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import com.project.domain.model.Todo
 import com.project.todolist.R
 import com.project.todolist.databinding.ActivityEditTodoBinding
-import org.koin.core.context.startKoin
 import java.text.SimpleDateFormat
 
 class EditTodoActivity : AppCompatActivity() {
