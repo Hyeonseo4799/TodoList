@@ -3,7 +3,8 @@ package com.project.todolist.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
@@ -15,7 +16,6 @@ import com.project.todolist.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "추가되었습니다.", Toast.LENGTH_SHORT).show()
                 }
                 1 -> {
-                    CoroutineScope(Dispatchers.IO).launch { todoViewModel.update(todo) }
+                    todoViewModel.update(todo)
                     Toast.makeText(this@MainActivity, "수정되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -40,13 +40,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        todoViewModel.todoList.observe(this@MainActivity) { todoAdapter.update(it) }
+
         binding = DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
         binding.activity = this@MainActivity
         binding.lifecycleOwner = this@MainActivity
 
         setRec()
+    }
 
-        todoViewModel.todoList.observe(this@MainActivity) { todoAdapter.update(it) }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_option, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_item_delete -> {
+                Toast.makeText(this@MainActivity, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                todoViewModel.todoList.value?.forEach {
+                    if (it.isChecked)
+                        todoViewModel.delete(it)
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun add() {
@@ -64,9 +82,7 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             rvTodoList.layoutManager = LinearLayoutManager(this@MainActivity)
             rvTodoList.adapter = todoAdapter
-            rvTodoList.itemAnimator = null
         }
-
     }
 
     private fun cbClick(itemId: Long) {
