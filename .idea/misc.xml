@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/user/Desktop/Study/Android/TodoList/presentation/src/main/res/drawable/menu_option.xml" value="0.175" />
+        <entry key="..\:/Users/user/Desktop/Study/Android/TodoList/presentation/src/main/res/drawable/top_nav_menu.xml" value="0.175" />
         <entry key="..\:/Users/user/Desktop/Study/Android/TodoList/presentation/src/main/res/layout/activity_edit_todo.xml" value="0.176" />
         <entry key="..\:/Users/user/Desktop/Study/Android/TodoList/presentation/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/user/Desktop/Study/Android/TodoList/presentation/src/main/res/layout/item_todo.xml" value="0.2" />
+        <entry key="..\:/Users/user/Desktop/Study/Android/TodoList/presentation/src/main/res/layout/top_nav.xml" value="0.21920289855072464" />
+        <entry key="..\:/Users/user/Desktop/Study/Android/TodoList/presentation/src/main/res/menu/menu_option.xml" value="0.14739583333333334" />
         <entry key="..\:/Users/user/Desktop/Study/Android/TodoList/presentation/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.143" />
       </map>
     </option>
