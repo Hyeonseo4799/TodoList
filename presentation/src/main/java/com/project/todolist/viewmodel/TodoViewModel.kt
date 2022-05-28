@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.Todo
 import com.project.domain.usecase.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TodoViewModel(
@@ -21,7 +22,9 @@ class TodoViewModel(
     }
 
     fun delete(todo: Todo) {
-        deleteUseCase.invoke(todo)
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteUseCase.invoke(todo)
+        }
     }
 
     fun getTodo(id: Long): Todo = getTodoUseCase.invoke(id)
