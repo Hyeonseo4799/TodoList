@@ -49,7 +49,6 @@ class TodoAdapter(
         this.list = newList
         notifyDataSetChanged()
     }
-
 }
 
 class CheckBoxClickListener(val clickListener: (itemId: Long) -> Unit) {
