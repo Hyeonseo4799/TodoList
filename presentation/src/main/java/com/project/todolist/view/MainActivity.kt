@@ -23,16 +23,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var todoAdapter: TodoAdapter
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_OK) {
-            val todo = it.data?.getSerializableExtra("todo") as Todo
-            when (it.data?.getIntExtra("flag", -1)) {
-                0 -> {
-                    CoroutineScope(Dispatchers.IO).launch { todoViewModel.insert(todo) }
-                    Toast.makeText(this@MainActivity, "추가되었습니다.", Toast.LENGTH_SHORT).show()
-                }
-                1 -> {
-                    todoViewModel.update(todo)
-                    Toast.makeText(this@MainActivity, "수정되었습니다.", Toast.LENGTH_SHORT).show()
+        when (it.resultCode) {
+            RESULT_OK -> {
+                val todo = it.data?.getSerializableExtra("todo") as Todo
+                when (it.data?.getIntExtra("flag", -1)) {
+                    0 -> {
+                        CoroutineScope(Dispatchers.IO).launch { todoViewModel.insert(todo) }
+                        Toast.makeText(this@MainActivity, "추가되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                    1 -> {
+                        todoViewModel.update(todo)
+                        Toast.makeText(this@MainActivity, "수정되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -57,11 +59,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_delete -> {
-                Toast.makeText(this@MainActivity, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
                 todoViewModel.todoList.value?.forEach {
                     if (it.isChecked)
                         todoViewModel.delete(it)
                 }
+                Toast.makeText(this@MainActivity, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
             }
         }
         return super.onOptionsItemSelected(item)

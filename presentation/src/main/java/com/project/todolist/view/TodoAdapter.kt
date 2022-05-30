@@ -18,8 +18,10 @@ class TodoAdapter(
         fun onBind(data: Todo) {
             binding.apply {
                 item = data
-                if (data.isChecked) todoTitle.paintFlags = todoTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                else todoTitle.paintFlags = todoTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                when (data.isChecked) {
+                    true -> todoTitle.paintFlags = todoTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    false -> todoTitle.paintFlags = todoTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                }
             }
         }
 

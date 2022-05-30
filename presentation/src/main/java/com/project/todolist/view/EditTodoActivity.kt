@@ -44,10 +44,7 @@ class EditTodoActivity : AppCompatActivity() {
             "ADD" -> {
                 if (emptyCheck(title, content)) {
                     val todo = Todo(0, title, content, currentDate, false)
-                    val intent = Intent().apply {
-                        putExtra("todo", todo)
-                        putExtra("flag", 0)
-                    }
+                    val intent = intentPutExtra(todo, 0)
                     setResult(RESULT_OK, intent)
                     finish()
                 }
@@ -55,10 +52,7 @@ class EditTodoActivity : AppCompatActivity() {
             "EDIT" -> {
                 if (emptyCheck(title, content)) {
                     val todo = Todo(todo!!.id, title, content, currentDate, todo!!.isChecked)
-                    val intent = Intent().apply {
-                        putExtra("todo", todo)
-                        putExtra("flag", 1)
-                    }
+                    val intent = intentPutExtra(todo, 1)
                     setResult(RESULT_OK, intent)
                     finish()
                 }
@@ -68,3 +62,8 @@ class EditTodoActivity : AppCompatActivity() {
 }
 
 private fun emptyCheck(title: String, content: String): Boolean = title.isNotEmpty() && content.isNotEmpty()
+
+private fun intentPutExtra(todo: Todo, value: Int) = Intent().apply {
+    putExtra("todo", todo)
+    putExtra("flag", value)
+}
